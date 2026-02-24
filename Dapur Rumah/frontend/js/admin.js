@@ -12,11 +12,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     let session;
     try {
         const res = await apiFetch('/api/auth/get-session');
-        if (!res.session) { window.location.href = '/login.html'; return; }
+        if (!res.session) { window.location.href = 'login.html'; return; }
         session = res;
         adminUser.textContent = res.user.name || res.user.email;
     } catch (e) {
-        window.location.href = '/login.html';
+        window.location.href = 'login.html';
         return;
     }
 
@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Logout
     logoutBtn.addEventListener('click', async () => {
         await apiFetch('/api/auth/sign-out', { method: 'POST' });
-        window.location.href = '/login.html';
+        window.location.href = 'login.html';
     });
 
     // Refresh
@@ -107,7 +107,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     </button>
                 </td>
                 <td>
-                    <a href="/seller.html?id=${s.id}" target="_blank" style="font-size:0.75rem; color:var(--primary-color); text-decoration:none; font-weight:600;">Lihat →</a>
+                    <a href="seller.html?id=${s.id}" target="_blank" style="font-size:0.75rem; color:var(--primary-color); text-decoration:none; font-weight:600;">Lihat →</a>
                 </td>
             </tr>`;
         }).join('');

@@ -47,19 +47,19 @@ export function injectBottomNav(activePage = 'home') {
         {
             id: 'home',
             label: 'Utama',
-            href: '/',
+            href: 'index.html',
             icon: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>`
         },
         {
             id: 'search',
             label: 'Cari',
-            href: '/#search-input',
+            href: 'index.html#search-input',
             icon: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>`
         },
         {
             id: 'account',
             label: 'Akaun',
-            href: '/login.html',
+            href: 'login.html',
             icon: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>`
         }
     ];
@@ -83,7 +83,7 @@ if (typeof document !== 'undefined') {
     // Register PWA Service Worker
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
-            navigator.serviceWorker.register('/sw.js').catch(error => {
+            navigator.serviceWorker.register('./sw.js').catch(error => {
                 console.warn('Service Worker registration failed:', error);
             });
         });

@@ -68,7 +68,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                         ${p.description ? p.description.replace(/\n/g, '<br>') : '<span class="text-muted">Tiada penerangan disediakan.</span>'}
                     </div>
 
-                    <a href="/seller.html?id=${p.seller.id}" class="seller-profile-card">
+                    <a href="seller.html?id=${p.seller.id}" class="seller-profile-card">
                         ${p.seller.profile_image
                 ? `<img src="${p.seller.profile_image}" class="seller-avatar" style="object-fit:cover;">`
                 : `<div class="seller-avatar">${initial}</div>`

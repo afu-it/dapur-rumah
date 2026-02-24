@@ -6,10 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="description" content="Log masuk ke akaun Dapur Rumah.">
     <meta name="theme-color" content="#ef4444">
-    <link rel="manifest" href="/manifest.json">
+    <link rel="manifest" href="manifest.json">
     <title>Log Masuk — Dapur Rumah</title>
-    <link rel="stylesheet" href="/css/globals.css">
-    <link rel="stylesheet" href="/css/pages/auth.css">
+    <link rel="stylesheet" href="css/globals.css">
+    <link rel="stylesheet" href="css/pages/auth.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 
@@ -64,13 +64,13 @@
             </form>
 
             <div class="auth-footer">
-                Belum ada akaun? <a href="/register.html">Daftar sekarang</a>
+                Belum ada akaun? <a href="register.html">Daftar sekarang</a>
             </div>
         </div>
     </div>
 
     <script type="module">
-        import { injectBottomNav } from '/js/ui.js';
+        import { injectBottomNav } from './js/ui.js';
         injectBottomNav('account');
         import { login } from './js/auth.js';
 
@@ -79,6 +79,7 @@
         const errorMsg = document.getElementById('error-message');
         const btnText = document.querySelector('.btn-text');
         const btnLoader = document.querySelector('.btn-loader');
+        const dashboardPath = `${import.meta.env.BASE_URL}dashboard.html`;
 
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -92,7 +93,7 @@
 
             try {
                 await login(email, password);
-                window.location.href = '/dashboard.html';
+                window.location.href = dashboardPath;
             } catch (error) {
                 errorMsg.textContent = "Log masuk gagal. Sila semak e-mel dan kata laluan anda.";
                 errorMsg.style.display = 'block';
@@ -106,6 +107,9 @@
         // Google Sign-In
         const isLocalhost = window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost';
         const API_BASE = isLocalhost ? 'https://dapur-rumah-api.afuitdev.workers.dev' : '';
+        const callbackURL = isLocalhost
+            ? 'http://127.0.0.1:5500/login.html'
+            : `${window.location.origin}${dashboardPath}`;
         const googleBtn = document.getElementById('google-signin-btn');
         if (googleBtn) {
             googleBtn.addEventListener('click', async () => {
@@ -113,13 +117,13 @@
                     const response = await fetch(API_BASE + '/api/auth/get', { method: 'GET', credentials: 'include' });
                     const data = await response.json();
                     if (data.socialProviders?.google) {
-                        window.location.href = API_BASE + '/api/auth/sign-in/social?provider=google&callbackURL=' + (isLocalhost ? 'http://127.0.0.1:5500/login.html' : '/dashboard.html');
+                        window.location.href = API_BASE + '/api/auth/sign-in/social?provider=google&callbackURL=' + encodeURIComponent(callbackURL);
                     } else {
                         errorMsg.textContent = "Log masuk Google belum tersedia. Sila gunakan e-mel dan kata laluan.";
                         errorMsg.style.display = 'block';
                     }
                 } catch (e) {
-                    window.location.href = API_BASE + '/api/auth/sign-in/social?provider=google&callbackURL=' + (isLocalhost ? 'http://127.0.0.1:5500/login.html' : '/dashboard.html');
+                    window.location.href = API_BASE + '/api/auth/sign-in/social?provider=google&callbackURL=' + encodeURIComponent(callbackURL);
                 }
             });
         }

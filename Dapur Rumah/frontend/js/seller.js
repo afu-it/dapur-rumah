@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         if (products.length > 0) {
             productsHtml = products.map(p => `
-                <a href="/product.html?id=${p.id}" class="product-card">
+                <a href="product.html?id=${p.id}" class="product-card">
                     <div class="product-badges">
                         <span class="badge badge-${p.status}">${p.status.replace('_', ' ').toUpperCase()}</span>
                     </div>

@@ -6,11 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="description" content="Daftar sebagai peniaga di Dapur Rumah.">
     <meta name="theme-color" content="#ef4444">
-    <link rel="manifest" href="/manifest.json">
+    <link rel="manifest" href="manifest.json">
 
     <title>Daftar Peniaga — Dapur Rumah</title>
-    <link rel="stylesheet" href="/css/globals.css">
-    <link rel="stylesheet" href="/css/pages/auth.css">
+    <link rel="stylesheet" href="css/globals.css">
+    <link rel="stylesheet" href="css/pages/auth.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 
@@ -71,13 +71,13 @@
             </form>
 
             <div class="auth-footer">
-                Sudah ada akaun? <a href="/login.html">Log masuk</a>
+                Sudah ada akaun? <a href="login.html">Log masuk</a>
             </div>
         </div>
     </div>
 
     <script type="module">
-        import { injectBottomNav } from '/js/ui.js';
+        import { injectBottomNav } from './js/ui.js';
         injectBottomNav('account');
         import { register } from './js/auth.js';
 
@@ -86,6 +86,7 @@
         const errorMsg = document.getElementById('error-message');
         const btnText = document.querySelector('.btn-text');
         const btnLoader = document.querySelector('.btn-loader');
+        const dashboardPath = `${import.meta.env.BASE_URL}dashboard.html`;
 
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -101,7 +102,7 @@
             try {
                 await register(name, email, password);
                 // On success, redirect to dashboard where they can complete their shop profile
-                window.location.href = '/dashboard.html?registered=true';
+                window.location.href = `${dashboardPath}?registered=true`;
             } catch (error) {
                 errorMsg.textContent = error.message || "Pendaftaran gagal. Sila cuba lagi.";
                 errorMsg.style.display = 'block';
@@ -113,10 +114,13 @@
         });
 
         // Google Sign-Up
+        const isLocalhost = window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost';
+        const API_BASE = isLocalhost ? 'https://dapur-rumah-api.afuitdev.workers.dev' : '';
+        const callbackURL = `${window.location.origin}${dashboardPath}`;
         const googleBtn = document.getElementById('google-signup-btn');
         if (googleBtn) {
             googleBtn.addEventListener('click', () => {
-                window.location.href = '/api/auth/sign-in/social?provider=google&callbackURL=/dashboard.html';
+                window.location.href = API_BASE + '/api/auth/sign-in/social?provider=google&callbackURL=' + encodeURIComponent(callbackURL);
             });
         }
     </script>

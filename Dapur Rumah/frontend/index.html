@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="description" content="Platform pasaran makanan home-cooked komunitif di Malaysia.">
     <meta name="theme-color" content="#ef4444">
-    <link rel="manifest" href="/manifest.json">
+    <link rel="manifest" href="manifest.json">
 
     <!-- Open Graph for WhatsApp sharing -->
     <meta property="og:title" content="Dapur Rumah">
@@ -15,16 +15,16 @@
     <meta property="og:url" content="https://dapurrumah.com/">
 
     <title>Dapur Rumah — Beli Makanan Home-Cooked Berdekatan Anda</title>
-    <link rel="stylesheet" href="/css/globals.css">
-    <link rel="stylesheet" href="/css/pages/home.css">
+    <link rel="stylesheet" href="css/globals.css">
+    <link rel="stylesheet" href="css/pages/home.css">
 </head>
 
 <body>
     <header class="navbar">
         <div class="nav-container">
-            <a href="/" class="logo">Dapur Rumah</a>
+            <a href="index.html" class="logo">Dapur Rumah</a>
             <div class="nav-actions">
-                <a href="/login.html" class="btn btn-outline" id="nav-login-btn">Untuk Peniaga</a>
+                <a href="login.html" class="btn btn-outline" id="nav-login-btn">Untuk Peniaga</a>
             </div>
         </div>
     </header>
@@ -98,10 +98,10 @@
     </footer>
 
     <script type="module">
-        import { injectBottomNav } from '/js/ui.js';
+        import { injectBottomNav } from './js/ui.js';
         injectBottomNav('home');
     </script>
-    <script type="module" src="/js/home.js"></script>
+    <script type="module" src="js/home.js"></script>
 </body>
 
 </html>

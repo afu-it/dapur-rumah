@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     try {
         const sessionRes = await apiFetch('/api/auth/get-session');
         if (!sessionRes.session) {
-            window.location.href = '/login.html';
+            window.location.href = 'login.html';
             return;
         }
 
@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         logoutBtn.style.display = 'inline-block';
         logoutBtn.addEventListener('click', async () => {
             await apiFetch('/api/auth/sign-out', { method: 'POST' });
-            window.location.href = '/login.html';
+            window.location.href = 'login.html';
         });
 
         // Init Data
@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         loadAnalytics(); // Load analytics (non-blocking)
 
     } catch (e) {
-        window.location.href = '/login.html';
+        window.location.href = 'login.html';
     }
 
     /** Profile Management */

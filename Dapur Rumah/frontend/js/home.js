@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const sessionRes = await apiFetch('/api/auth/get-session');
         if (sessionRes.session) {
             navLoginBtn.textContent = 'Papan Pemuka';
-            navLoginBtn.href = '/dashboard.html';
+            navLoginBtn.href = 'dashboard.html';
         }
     } catch (e) { }
 
@@ -93,7 +93,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                         : `<div class="featured-seller-avatar">${initial}</div>`;
 
                     return `
-                        <a href="/seller.html?id=${s.id}" class="featured-seller-card">
+                        <a href="seller.html?id=${s.id}" class="featured-seller-card">
                             ${avatar}
                             <div>
                                 <p class="featured-seller-name">${s.shop_name}</p>
@@ -176,7 +176,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
 
         const html = products.map(p => `
-            <a href="/product.html?id=${p.id}" class="product-card">
+            <a href="product.html?id=${p.id}" class="product-card">
                 <div class="product-badges">
                     <span class="badge badge-${p.status}">${p.status.replace('_', ' ').toUpperCase()}</span>
                 </div>

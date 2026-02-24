@@ -7,20 +7,20 @@
     <meta property="og:title" content="Profil Peniaga — Dapur Rumah">
     <meta property="og:description" content="Sokong peniaga lokal. Lihat senarai produk mereka.">
     <meta name="theme-color" content="#ef4444">
-    <link rel="manifest" href="/manifest.json">
+    <link rel="manifest" href="manifest.json">
 
     <title>Profil Peniaga — Dapur Rumah</title>
-    <link rel="stylesheet" href="/css/globals.css">
-    <link rel="stylesheet" href="/css/pages/home.css"> <!-- Reusing Grid CSS -->
-    <link rel="stylesheet" href="/css/pages/seller.css">
+    <link rel="stylesheet" href="css/globals.css">
+    <link rel="stylesheet" href="css/pages/home.css"> <!-- Reusing Grid CSS -->
+    <link rel="stylesheet" href="css/pages/seller.css">
 </head>
 
 <body>
     <header class="navbar">
         <div class="nav-container">
-            <a href="/" class="logo">← Kembali</a>
+            <a href="index.html" class="logo">← Kembali</a>
             <div class="nav-actions">
-                <a href="/login.html" class="btn btn-outline">Untuk Peniaga</a>
+                <a href="login.html" class="btn btn-outline">Untuk Peniaga</a>
             </div>
         </div>
     </header>
@@ -35,10 +35,10 @@
     </footer>
 
     <script type="module">
-        import { injectBottomNav } from '/js/ui.js';
+        import { injectBottomNav } from './js/ui.js';
         injectBottomNav('home');
     </script>
-    <script type="module" src="/js/seller.js"></script>
+    <script type="module" src="js/seller.js"></script>
 </body>
 
 </html>

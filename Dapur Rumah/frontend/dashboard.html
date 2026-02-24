@@ -5,16 +5,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="theme-color" content="#ef4444">
-    <link rel="manifest" href="/manifest.json">
+    <link rel="manifest" href="manifest.json">
     <title>Papan Pemuka Peniaga — Dapur Rumah</title>
-    <link rel="stylesheet" href="/css/globals.css">
-    <link rel="stylesheet" href="/css/pages/dashboard.css">
+    <link rel="stylesheet" href="css/globals.css">
+    <link rel="stylesheet" href="css/pages/dashboard.css">
 </head>
 
 <body>
     <header class="navbar">
         <div class="nav-container">
-            <a href="/" class="logo">Dapur Rumah</a>
+            <a href="index.html" class="logo">Dapur Rumah</a>
             <div class="nav-actions">
                 <span id="user-greeting">Sila tunggu...</span>
                 <button id="logout-btn" class="btn btn-outline" style="display: none;">Log Keluar</button>
@@ -220,12 +220,12 @@
         </div>
     </section>
 
-    <script type="module" src="/js/api.js"></script>
+    <script type="module" src="js/api.js"></script>
 
-    <script type="module" src="/js/upload.js"></script>
-    <script type="module" src="/js/dashboard.js"></script>
+    <script type="module" src="js/upload.js"></script>
+    <script type="module" src="js/dashboard.js"></script>
     <script type="module">
-        import { injectBottomNav } from '/js/ui.js';
+        import { injectBottomNav } from './js/ui.js';
         injectBottomNav('account');
     </script>
 </body>
