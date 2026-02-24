@@ -1,12 +1,9 @@
 import { apiFetch } from './api.js';
 
 function trackEvent(productId, event) {
-    // Fire-and-forget — never blocks UI
-    fetch('/api/track', {
+    apiFetch('/api/track', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ product_id: productId, event }),
-        credentials: 'include',
+        body: { product_id: productId, event },
     }).catch(() => { });
 }
 

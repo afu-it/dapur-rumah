@@ -6,16 +6,15 @@
  * @param {string} endpoint e.g., '/api/upload/image'
  * @param {RequestInit} options Standard fetch options
  */
-export async function apiFetch(endpoint, options = {}) {
-    // If not absolute URL, prepend /api or proxy handles it.
-    // In our vite dev environment, '/api' is proxied to :8787 automatically.
+const isLocalhost = typeof window !== 'undefined' && (window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost');
+const API_BASE = isLocalhost ? 'https://dapur-rumah-api.afuitdev.workers.dev' : '';
 
+export async function apiFetch(endpoint, options = {}) {
     const config = {
         ...options,
-        credentials: 'include', // Extremely important for Better Auth sessions
+        credentials: 'include',
     };
 
-    // Auto-serialize JSON if plain object is passed
     if (config.body && typeof config.body === 'object' && !(config.body instanceof FormData)) {
         config.body = JSON.stringify(config.body);
         config.headers = {
@@ -24,9 +23,9 @@ export async function apiFetch(endpoint, options = {}) {
         };
     }
 
-    const res = await fetch(endpoint, config);
+    const url = endpoint.startsWith('http') ? endpoint : API_BASE + endpoint;
+    const res = await fetch(url, config);
 
-    // Try to parse JSON safely, or return text
     const contentType = res.headers.get("content-type");
     if (contentType && contentType.includes("application/json")) {
         return res.json();

@@ -1,9 +1,11 @@
 import { createAuthClient } from 'better-auth/client';
 
+const isLocalhost = window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost';
+
 export const authClient = createAuthClient({
-    baseURL: import.meta.env.PROD
-        ? '' // Pages Function proxies /api/* to the Worker - same origin
-        : 'http://localhost:8787',
+    baseURL: isLocalhost
+        ? 'https://dapur-rumah-api.afuitdev.workers.dev'
+        : '', // Pages Function proxies /api/* to the Worker - same origin
 });
 
 // Sign up — seller record auto-created via databaseHooks

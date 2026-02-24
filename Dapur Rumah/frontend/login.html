@@ -104,20 +104,22 @@
         });
 
         // Google Sign-In
+        const isLocalhost = window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost';
+        const API_BASE = isLocalhost ? 'https://dapur-rumah-api.afuitdev.workers.dev' : '';
         const googleBtn = document.getElementById('google-signin-btn');
         if (googleBtn) {
             googleBtn.addEventListener('click', async () => {
                 try {
-                    const response = await fetch('/api/auth/get', { method: 'GET' });
+                    const response = await fetch(API_BASE + '/api/auth/get', { method: 'GET', credentials: 'include' });
                     const data = await response.json();
                     if (data.socialProviders?.google) {
-                        window.location.href = '/api/auth/sign-in/social?provider=google&callbackURL=/dashboard.html';
+                        window.location.href = API_BASE + '/api/auth/sign-in/social?provider=google&callbackURL=' + (isLocalhost ? 'http://127.0.0.1:5500/login.html' : '/dashboard.html');
                     } else {
                         errorMsg.textContent = "Log masuk Google belum tersedia. Sila gunakan e-mel dan kata laluan.";
                         errorMsg.style.display = 'block';
                     }
                 } catch (e) {
-                    window.location.href = '/api/auth/sign-in/social?provider=google&callbackURL=/dashboard.html';
+                    window.location.href = API_BASE + '/api/auth/sign-in/social?provider=google&callbackURL=' + (isLocalhost ? 'http://127.0.0.1:5500/login.html' : '/dashboard.html');
                 }
             });
         }
