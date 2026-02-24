@@ -11,6 +11,30 @@ import { Env } from './types';
 
 const app = new Hono<{ Bindings: Env }>();
 
+const DEFAULT_ALLOWED_ORIGINS = [
+    'http://127.0.0.1:5500',
+    'http://localhost:5500',
+    'http://localhost:5173',
+    'https://afu-it.github.io',
+];
+
+function normalizeOrigin(origin: string) {
+    return origin.replace(/\/+$/, '');
+}
+
+function buildAllowedOrigins(env: Env) {
+    const fromEnv = (env.ALLOWED_ORIGINS || '')
+        .split(',')
+        .map((item) => item.trim())
+        .filter(Boolean);
+
+    return new Set(
+        [env.FRONTEND_URL, ...DEFAULT_ALLOWED_ORIGINS, ...fromEnv]
+            .filter(Boolean)
+            .map(normalizeOrigin)
+    );
+}
+
 app.onError((err, c) => {
     console.error('Core App Error:', err);
     return c.json({ success: false, error: err.message, stack: err.stack }, 500);
@@ -18,8 +42,12 @@ app.onError((err, c) => {
 
 app.use('*', logger());
 app.use('*', async (c, next) => {
+    const allowedOrigins = buildAllowedOrigins(c.env);
     const corsMiddleware = cors({
-        origin: c.env.FRONTEND_URL,
+        origin: (origin) => {
+            const normalizedOrigin = origin ? normalizeOrigin(origin) : '';
+            return allowedOrigins.has(normalizedOrigin) ? normalizedOrigin : normalizeOrigin(c.env.FRONTEND_URL);
+        },
         allowHeaders: ['Content-Type', 'Authorization'],
         allowMethods: ['POST', 'GET', 'OPTIONS', 'PUT', 'DELETE'],
         exposeHeaders: ['Content-Length'],

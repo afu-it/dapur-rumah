@@ -4,7 +4,7 @@ import { Env } from '../types';
 
 const authRoutes = new Hono<{ Bindings: Env }>();
 
-authRoutes.on(['POST', 'GET'], '/**', async (c) => {
+authRoutes.on(['POST', 'GET', 'OPTIONS'], '*', async (c) => {
     try {
         const auth = createAuth(c.env);
         return await auth.handler(c.req.raw);

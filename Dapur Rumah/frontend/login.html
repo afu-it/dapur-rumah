@@ -79,7 +79,7 @@
         const errorMsg = document.getElementById('error-message');
         const btnText = document.querySelector('.btn-text');
         const btnLoader = document.querySelector('.btn-loader');
-        const dashboardPath = `${import.meta.env.BASE_URL}dashboard.html`;
+        const dashboardPath = './dashboard.html';
 
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -108,8 +108,8 @@
         const isLocalhost = window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost';
         const API_BASE = isLocalhost ? 'https://dapur-rumah-api.afuitdev.workers.dev' : '';
         const callbackURL = isLocalhost
-            ? 'http://127.0.0.1:5500/login.html'
-            : `${window.location.origin}${dashboardPath}`;
+            ? new URL('./login.html', window.location.href).href
+            : new URL(dashboardPath, window.location.href).href;
         const googleBtn = document.getElementById('google-signin-btn');
         if (googleBtn) {
             googleBtn.addEventListener('click', async () => {
