@@ -1,4 +1,4 @@
-import { apiFetch } from './api.js';
+import { apiFetch } from './api.js?v=20260224d';
 
 const IMAGE_COMPRESSION_CDN = 'https://cdn.jsdelivr.net/npm/browser-image-compression@2.0.2/+esm';
 let imageCompressionLoader = null;

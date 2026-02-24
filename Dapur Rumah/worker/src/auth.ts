@@ -30,8 +30,22 @@ function buildTrustedOrigins(env: Env) {
     ];
 }
 
+function shouldUseCrossSiteCookies(env: Env) {
+    try {
+        const authUrl = new URL(env.BETTER_AUTH_URL);
+        const frontendUrl = new URL(env.FRONTEND_URL);
+        // Same-site cookies work when protocol + hostname match (port can differ).
+        return !(authUrl.protocol === frontendUrl.protocol && authUrl.hostname === frontendUrl.hostname);
+    } catch {
+        // Safer default for production-style split domains (Pages -> Worker).
+        return true;
+    }
+}
+
 export const createAuth = (env: Env) => {
     const db = createDb(env.DB);
+    const useCrossSiteCookies = shouldUseCrossSiteCookies(env);
+
     return betterAuth({
         logger: {
             level: 'debug'
@@ -56,6 +70,17 @@ export const createAuth = (env: Env) => {
         secret: env.BETTER_AUTH_SECRET,
         baseURL: env.BETTER_AUTH_URL,
         trustedOrigins: buildTrustedOrigins(env),
+        advanced: {
+            defaultCookieAttributes: useCrossSiteCookies
+                ? {
+                    sameSite: 'none',
+                    secure: true,
+                }
+                : {
+                    sameSite: 'lax',
+                    secure: env.BETTER_AUTH_URL.startsWith('https://'),
+                },
+        },
         databaseHooks: {
             user: {
                 create: {

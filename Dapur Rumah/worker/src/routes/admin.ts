@@ -4,6 +4,8 @@ import { createDb } from '../db';
 import { eq, desc } from 'drizzle-orm';
 import { sellers, products } from '../schema';
 import { createAuth } from '../auth';
+import { withSessionCookieFromAuthorization } from '../utils/auth-cookie';
+import { getBearerToken, getSessionFromBearerToken } from '../utils/bearer-session';
 
 const adminRoutes = new Hono<{ Bindings: Env }>();
 
@@ -13,7 +15,13 @@ const adminRoutes = new Hono<{ Bindings: Env }>();
 async function adminMiddleware(c: any, next: any) {
     try {
         const auth = createAuth(c.env);
-        const session = await auth.api.getSession({ headers: c.req.raw.headers });
+        const headers = withSessionCookieFromAuthorization(c.req.raw.headers);
+        let session = await auth.api.getSession({ headers });
+        if (!session) {
+            const bearerToken = getBearerToken(c.req.raw.headers);
+            session = await getSessionFromBearerToken(c.env.DB, bearerToken);
+        }
+
         if (!session?.user) {
             return c.json({ success: false, error: 'Tidak ditemukan.' }, 401);
         }

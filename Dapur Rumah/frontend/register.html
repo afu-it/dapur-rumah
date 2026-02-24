@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="description" content="Daftar sebagai peniaga di Dapur Rumah.">
     <meta name="theme-color" content="#ef4444">
+    <link rel="icon" type="image/x-icon" href="./favicon.ico">
     <link rel="manifest" href="manifest.json">
 
     <title>Daftar Peniaga — Dapur Rumah</title>
@@ -79,7 +80,7 @@
     <script type="module">
         import { injectBottomNav } from './js/ui.js';
         injectBottomNav('account');
-        import { register } from './js/auth.js';
+        import { register } from './js/auth.js?v=20260224d';
 
         const form = document.getElementById('register-form');
         const submitBtn = document.getElementById('submit-btn');

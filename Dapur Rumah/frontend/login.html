@@ -1,133 +1,476 @@
 <!DOCTYPE html>
 <html lang="ms">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="description" content="Log masuk ke akaun Dapur Rumah.">
-    <meta name="theme-color" content="#ef4444">
-    <link rel="manifest" href="manifest.json">
-    <title>Log Masuk — Dapur Rumah</title>
+    <meta name="theme-color" content="#FF6B35">
+    <title>Login Seller — Dapur Rumah</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/globals.css">
-    <link rel="stylesheet" href="css/pages/auth.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #FF6B35;
+            --primary-dark: #E85A24;
+            --primary-light: #FFF0EB;
+            --text: #1A1A2E;
+            --text-muted: #636E72;
+            --bg: #FAFBFC;
+            --surface: #FFFFFF;
+            --border: #E8ECEF;
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.04);
+            --shadow-md: 0 8px 24px rgba(0,0,0,0.08);
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 20px;
+            --radius-xl: 28px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html, body {
+            height: 100%;
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #E0E5EC;
+            color: var(--text);
+            overflow: hidden;
+        }
+
+        .login-container {
+            width: 100%;
+            max-width: 420px;
+            height: 100%;
+            margin: 0 auto;
+            background: var(--bg);
+            position: relative;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        @media (min-width: 440px) {
+            .login-container {
+                height: 95%;
+                margin-top: 2.5%;
+                border-radius: 24px;
+            }
+        }
+
+        .login-header {
+            padding: 40px 24px 20px;
+            text-align: center;
+        }
+
+        .logo {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, #FF6B35 0%, #FF8F65 100%);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 32px;
+            box-shadow: 0 8px 24px rgba(255,107,53,0.4);
+        }
+
+        .login-header h1 {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .login-header p {
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        .login-form {
+            padding: 20px 24px;
+            flex: 1;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 8px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 16px;
+            background: var(--surface);
+            border: 2px solid var(--border);
+            border-radius: var(--radius-md);
+            font-size: 15px;
+            color: var(--text);
+            outline: none;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+
+        .form-group input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(255,107,53,0.1);
+        }
+
+        .form-group input::placeholder {
+            color: #B2BEC3;
+        }
+
+        .error-message {
+            background: #FEE2E2;
+            color: #DC2626;
+            padding: 12px 16px;
+            border-radius: var(--radius-md);
+            font-size: 13px;
+            font-weight: 500;
+            margin-bottom: 16px;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        .btn-login {
+            width: 100%;
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 18px;
+            border-radius: var(--radius-lg);
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 8px 24px rgba(255,107,53,0.4);
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn-login:active {
+            transform: scale(0.98);
+        }
+
+        .btn-login:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin: 24px 0;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+        }
+
+        .divider span {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .btn-google {
+            width: 100%;
+            background: var(--surface);
+            border: 2px solid var(--border);
+            padding: 16px;
+            border-radius: var(--radius-lg);
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            color: var(--text);
+            transition: all 0.2s;
+            margin-bottom: 12px;
+        }
+
+        .btn-google:hover {
+            border-color: #DB4437;
+        }
+
+        .demo-section {
+            margin-top: 20px;
+        }
+
+        .demo-section p {
+            text-align: center;
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 14px;
+        }
+
+        .demo-btns {
+            display: flex;
+            gap: 12px;
+        }
+
+        .demo-btn {
+            flex: 1;
+            padding: 14px;
+            border-radius: var(--radius-md);
+            font-size: 14px;
+            font-weight: 600;
+            text-align: center;
+            text-decoration: none;
+            transition: all 0.2s;
+            cursor: pointer;
+            border: none;
+        }
+
+        .demo-btn-1 {
+            background: #0f766e;
+            color: white;
+        }
+
+        .demo-btn-1:hover {
+            background: #0d655d;
+        }
+
+        .demo-btn-2 {
+            background: #0b5ed7;
+            color: white;
+        }
+
+        .demo-btn-2:hover {
+            background: #0a4fc4;
+        }
+
+        .login-footer {
+            padding: 20px 24px 30px;
+            text-align: center;
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        .login-footer a {
+            color: var(--primary);
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .back-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 14px;
+            padding: 12px;
+            margin-bottom: 10px;
+        }
+
+        .back-btn:hover {
+            color: var(--primary);
+        }
+
+        .spinner {
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
 </head>
-
 <body>
-    <div class="auth-container">
-        <div class="auth-card">
-            <div class="auth-header">
-                <h2>Log Masuk Peniaga</h2>
-                <p>Selamat kembali ke Dapur Rumah</p>
-            </div>
+    <div class="login-container">
+        <div class="login-header">
+            <div class="logo">🍽️</div>
+            <h1>Login Seller</h1>
+            <p>Selamat kembali ke Dapur Rumah</p>
+        </div>
 
+        <div class="login-form">
             <form id="login-form">
                 <div class="form-group">
-                    <label for="email">E-mel</label>
-                    <input type="email" id="email" name="email" required placeholder="nama@email.com">
+                    <label>E-mel</label>
+                    <input type="email" id="email" placeholder="nama@email.com" required>
                 </div>
 
                 <div class="form-group">
-                    <label for="password">Kata Laluan</label>
-                    <input type="password" id="password" name="password" required placeholder="••••••••">
+                    <label>Kata Laluan</label>
+                    <input type="password" id="password" placeholder="••••••••" required>
                 </div>
 
-                <div id="error-message" class="error-text" style="display: none;"></div>
+                <div id="error-message" class="error-message"></div>
 
-                <button type="submit" id="submit-btn" class="btn-primary">
-                    <span class="btn-text">Log Masuk</span>
-                    <span class="btn-loader" style="display: none;">Memuatkan...</span>
-                </button>
-
-                <!-- Divider -->
-                <div style="display:flex; align-items:center; gap:1rem; margin:1rem 0;">
-                    <div style="flex:1; height:1px; background:var(--border-color);"></div>
-                    <span style="font-size:0.8rem; color:var(--text-muted);">atau</span>
-                    <div style="flex:1; height:1px; background:var(--border-color);"></div>
-                </div>
-
-                <!-- Google Sign-In -->
-                <button type="button" id="google-signin-btn"
-                    style="width:100%; padding:0.75rem; border:1px solid var(--border-color); border-radius:var(--border-radius); background:var(--surface-color); cursor:pointer; display:flex; align-items:center; justify-content:center; gap:0.75rem; font-size:0.925rem; font-weight:500; color:var(--text-color); transition:background 0.2s;">
-                    <svg width="20" height="20" viewBox="0 0 24 24">
-                        <path fill="#4285F4"
-                            d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
-                        <path fill="#34A853"
-                            d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
-                        <path fill="#FBBC05"
-                            d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" />
-                        <path fill="#EA4335"
-                            d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
-                    </svg>
-                    Teruskan dengan Google
+                <button type="submit" id="submit-btn" class="btn-login">
+                    <span id="btn-text">Log Masuk</span>
+                    <div id="btn-loader" class="spinner" style="display:none;"></div>
                 </button>
             </form>
 
-            <div class="auth-footer">
-                Belum ada akaun? <a href="register.html">Daftar sekarang</a>
+            <div class="divider">
+                <span>atau</span>
             </div>
+
+            <button type="button" id="google-btn" class="btn-google">
+                <svg width="20" height="20" viewBox="0 0 24 24">
+                    <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                    <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                    <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                    <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                </svg>
+                Masuk dengan Google
+            </button>
+
+            <div class="demo-section">
+                <p>Nak Cuba Demo?</p>
+                <div class="demo-btns">
+                    <button id="demo-btn-1" class="demo-btn demo-btn-1">Demo Seller 1</button>
+                    <button id="demo-btn-2" class="demo-btn demo-btn-2">Demo Seller 2</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="login-footer">
+            <a href="index.html" class="back-btn">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg>
+                Kembali ke App
+            </a>
+            Belum ada akaun? <a href="register.html">Daftar sekarang</a>
         </div>
     </div>
 
     <script type="module">
-        import { injectBottomNav } from './js/ui.js';
-        injectBottomNav('account');
-        import { login } from './js/auth.js';
+        const API_BASE = 'https://dapur-rumah-api.afuitdev.workers.dev';
+        const AUTH_TOKEN_KEY = 'dapur_auth_token';
+
+        function getStoredAuthToken() {
+            try {
+                return localStorage.getItem(AUTH_TOKEN_KEY) || '';
+            } catch {
+                return '';
+            }
+        }
+
+        function setStoredAuthToken(token) {
+            try {
+                if (token) {
+                    localStorage.setItem(AUTH_TOKEN_KEY, token);
+                } else {
+                    localStorage.removeItem(AUTH_TOKEN_KEY);
+                }
+            } catch {}
+        }
+
+        async function authFetch(path, options = {}) {
+            const url = `${API_BASE}/api/auth${path}`;
+            const headers = new Headers(options.headers || {});
+            const token = getStoredAuthToken();
+            if (token && !headers.has('Authorization')) {
+                headers.set('Authorization', `Bearer ${token}`);
+            }
+            if (options.body && !headers.has('Content-Type')) {
+                headers.set('Content-Type', 'application/json');
+            }
+
+            const config = { credentials: 'include', ...options, headers };
+
+            if (config.body && typeof config.body === 'object') {
+                config.body = JSON.stringify(config.body);
+            }
+
+            const res = await fetch(url, config);
+            const contentType = res.headers.get('content-type') || '';
+            const isJson = contentType.includes('application/json');
+            const payload = isJson ? await res.json().catch(() => null) : await res.text();
+
+            if (!res.ok) {
+                const message = typeof payload === 'string'
+                    ? payload
+                    : (payload?.error || payload?.message || `Auth request failed (${res.status})`);
+                throw new Error(message);
+            }
+
+            return payload;
+        }
+
+        async function login(email, password) {
+            const payload = await authFetch('/sign-in/email', {
+                method: 'POST',
+                body: { email, password },
+            });
+            if (payload && typeof payload === 'object' && payload.token) {
+                setStoredAuthToken(payload.token);
+            }
+            return payload;
+        }
 
         const form = document.getElementById('login-form');
         const submitBtn = document.getElementById('submit-btn');
         const errorMsg = document.getElementById('error-message');
-        const btnText = document.querySelector('.btn-text');
-        const btnLoader = document.querySelector('.btn-loader');
-        const dashboardPath = './dashboard.html';
+        const btnText = document.getElementById('btn-text');
+        const btnLoader = document.getElementById('btn-loader');
 
+        // Demo buttons - go directly to dashboard with demo param
+        document.getElementById('demo-btn-1').addEventListener('click', () => {
+            window.location.href = 'dashboard.html?demo=1';
+        });
+
+        document.getElementById('demo-btn-2').addEventListener('click', () => {
+            window.location.href = 'dashboard.html?demo=2';
+        });
+
+        // Email/Password login
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
 
-            errorMsg.style.display = 'none';
+            errorMsg.classList.remove('show');
             btnText.style.display = 'none';
-            btnLoader.style.display = 'inline';
+            btnLoader.style.display = 'block';
             submitBtn.disabled = true;
 
             try {
                 await login(email, password);
-                window.location.href = dashboardPath;
+                window.location.href = 'dashboard.html';
             } catch (error) {
                 errorMsg.textContent = "Log masuk gagal. Sila semak e-mel dan kata laluan anda.";
-                errorMsg.style.display = 'block';
+                errorMsg.classList.add('show');
             } finally {
-                btnText.style.display = 'inline';
+                btnText.style.display = 'block';
                 btnLoader.style.display = 'none';
                 submitBtn.disabled = false;
             }
         });
 
         // Google Sign-In
-        const isLocalhost = window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost';
-        const API_BASE = isLocalhost ? 'https://dapur-rumah-api.afuitdev.workers.dev' : '';
-        const callbackURL = isLocalhost
-            ? new URL('./login.html', window.location.href).href
-            : new URL(dashboardPath, window.location.href).href;
-        const googleBtn = document.getElementById('google-signin-btn');
-        if (googleBtn) {
-            googleBtn.addEventListener('click', async () => {
-                try {
-                    const response = await fetch(API_BASE + '/api/auth/get', { method: 'GET', credentials: 'include' });
-                    const data = await response.json();
-                    if (data.socialProviders?.google) {
-                        window.location.href = API_BASE + '/api/auth/sign-in/social?provider=google&callbackURL=' + encodeURIComponent(callbackURL);
-                    } else {
-                        errorMsg.textContent = "Log masuk Google belum tersedia. Sila gunakan e-mel dan kata laluan.";
-                        errorMsg.style.display = 'block';
-                    }
-                } catch (e) {
-                    window.location.href = API_BASE + '/api/auth/sign-in/social?provider=google&callbackURL=' + encodeURIComponent(callbackURL);
-                }
-            });
-        }
+        document.getElementById('google-btn').addEventListener('click', async () => {
+            const callbackURL = new URL('./dashboard.html', window.location.href).href;
+            window.location.href = `${API_BASE}/api/auth/sign-in/social?provider=google&callbackURL=${encodeURIComponent(callbackURL)}`;
+        });
     </script>
 </body>
-
 </html>

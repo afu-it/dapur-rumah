@@ -8,19 +8,34 @@
  */
 const isLocalhost = typeof window !== 'undefined' && (window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost');
 const API_BASE = isLocalhost ? 'https://dapur-rumah-api.afuitdev.workers.dev' : '';
+const AUTH_TOKEN_KEY = 'dapur_auth_token';
+
+function getStoredAuthToken() {
+    try {
+        return localStorage.getItem(AUTH_TOKEN_KEY) || '';
+    } catch {
+        return '';
+    }
+}
 
 export async function apiFetch(endpoint, options = {}) {
+    const headers = new Headers(options.headers || {});
+    const token = getStoredAuthToken();
+    if (token && !headers.has('Authorization')) {
+        headers.set('Authorization', `Bearer ${token}`);
+    }
+
     const config = {
         ...options,
         credentials: 'include',
+        headers,
     };
 
     if (config.body && typeof config.body === 'object' && !(config.body instanceof FormData)) {
         config.body = JSON.stringify(config.body);
-        config.headers = {
-            'Content-Type': 'application/json',
-            ...config.headers
-        };
+        if (!headers.has('Content-Type')) {
+            headers.set('Content-Type', 'application/json');
+        }
     }
 
     const url = endpoint.startsWith('http') ? endpoint : API_BASE + endpoint;
