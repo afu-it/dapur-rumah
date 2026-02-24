@@ -152,7 +152,10 @@ document.addEventListener('DOMContentLoaded', async () => {
                     loadMoreContainer.style.display = 'none';
                 }
             } else {
-                catalogGrid.innerHTML = `<p class="empty-state" style="grid-column:1/-1; text-align:center;">Ralat pelayan: ${res.error}</p>`;
+                const serverError = typeof res === 'string'
+                    ? res
+                    : (res?.error || res?.message || 'Ralat tidak diketahui');
+                catalogGrid.innerHTML = `<p class="empty-state" style="grid-column:1/-1; text-align:center;">Ralat pelayan: ${serverError}</p>`;
             }
         } catch (e) {
             catalogGrid.innerHTML = '<p class="empty-state" style="grid-column:1/-1; text-align:center;">Gagal menghubungi pelayan.</p>';

@@ -25,12 +25,42 @@ export async function apiFetch(endpoint, options = {}) {
 
     const url = endpoint.startsWith('http') ? endpoint : API_BASE + endpoint;
     const res = await fetch(url, config);
+    const contentType = res.headers.get('content-type') || '';
+    const isJson = contentType.includes('application/json');
 
-    const contentType = res.headers.get("content-type");
-    if (contentType && contentType.includes("application/json")) {
-        return res.json();
+    if (isJson) {
+        try {
+            const data = await res.json();
+
+            // Normalize failed responses so UI can always rely on `error`.
+            if (!res.ok) {
+                return {
+                    success: false,
+                    ...data,
+                    error: data?.error || data?.message || `HTTP ${res.status}`,
+                };
+            }
+
+            return data;
+        } catch (e) {
+            // Fall through and return a normalized parse error below.
+        }
     }
-    return res.text();
+
+    const text = await res.text();
+
+    if (!res.ok) {
+        return {
+            success: false,
+            error: text || `HTTP ${res.status}`,
+        };
+    }
+
+    // Keep return shape consistent for non-JSON success payloads.
+    return {
+        success: true,
+        data: text,
+    };
 }
 
 export const api = {
