@@ -1,1 +1,0 @@
-async function c(o,a={}){const t={...a,credentials:"include"};t.body&&typeof t.body=="object"&&!(t.body instanceof FormData)&&(t.body=JSON.stringify(t.body),t.headers={"Content-Type":"application/json",...t.headers});const e=await fetch(o,t),n=e.headers.get("content-type");return n&&n.includes("application/json")?e.json():e.text()}export{c as a};

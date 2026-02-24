@@ -53,6 +53,17 @@ window.switchTab = function(tabId) {
     }
 }
 
+window.openLocationModal = function() {
+    switchTab('account');
+    if (typeof window.switchAccountSection === 'function') {
+        window.switchAccountSection('address');
+    }
+    setTimeout(() => {
+        const addressInput = document.getElementById('acc-address');
+        if (addressInput) addressInput.focus();
+    }, 120);
+}
+
 // EVENT LISTENERS
 function setupEventListeners() {
     // Categories
@@ -144,7 +155,7 @@ function renderProducts(products, containerId) {
     
     if(products.length === 0) {
         container.innerHTML = `
-            <div style="grid-column:1/-1; text-align:center; padding:40px; color:#636E72;">
+            <div class="products-empty-state">
                 <p style="font-size:24px; margin-bottom:8px;">🔍</p>
                 <p>Tiada makanan dijumpai</p>
             </div>
@@ -157,14 +168,17 @@ function renderProducts(products, containerId) {
             <img src="${p.img}" alt="${p.name}" loading="lazy">
             <div class="product-info">
                 <div class="product-title">${p.name}</div>
-                <div class="product-seller">${p.seller}</div>
                 <div class="product-bottom">
                     <div class="product-price">RM ${p.price.toFixed(2)}</div>
-                    <button class="btn-add" onclick="addToCart(${p.id})">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
-                    </button>
+                    <div class="product-rating">
+                        <span class="star">★</span>
+                        <span>${(4.6 + ((p.id % 4) * 0.1)).toFixed(1)} (${(100 + ((p.id % 3) * 100))}+)</span>
+                    </div>
                 </div>
             </div>
+            <button class="btn-add" onclick="addToCart(${p.id})" aria-label="Tambah ke troli">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
+            </button>
         </div>
     `).join('');
 }
