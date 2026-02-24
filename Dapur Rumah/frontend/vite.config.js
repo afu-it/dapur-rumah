@@ -16,10 +16,13 @@ export default defineConfig({
     },
   },
   server: {
+    port: 5500,
+    host: '127.0.0.1',
     proxy: {
       '/api': {
-        target: 'http://localhost:8787',
+        target: 'https://dapur-rumah-api.afuitdev.workers.dev',
         changeOrigin: true,
+        secure: true,
       },
     },
   },

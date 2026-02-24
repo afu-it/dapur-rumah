@@ -85,4 +85,11 @@ INSERT INTO products (seller_id, category_id, name, description, price, price_no
 -- Insert products for Mak Long (Kuih Muih)
 INSERT INTO products (seller_id, category_id, name, description, price, price_note, image_url, status, is_featured, createdAt, updatedAt) VALUES
 ('seller4', 'cat_3', 'Kuih Lapis', 'Kuih lapis tradisional yang lembut', 20.00, 'per kotak', '', 'ada_stok', 1, strftime('%s', 'now'), strftime('%s', 'now')),
-('seller4', 'cat_3', 'Kuih Talam', 'Kuih talam pandan dan keladi', 15.00, 'per bekas', '', 'ada_stok', 0, strftime('%s', 'now'),
+('seller4', 'cat_3', 'Kuih Talam', 'Kuih talam pandan dan keladi', 15.00, 'per bekas', '', 'ada_stok', 0, strftime('%s', 'now'), strftime('%s', 'now')),
+('seller4', 'cat_3', 'Onde-Onde', 'Onde-onde isi keladi, lembut dan sedap', 12.00, 'per pack', '', 'ada_stok', 0, strftime('%s', 'now'), strftime('%s', 'now'));
+
+-- Insert products for Fruitz (Minuman)
+INSERT INTO products (seller_id, category_id, name, description, price, price_note, image_url, status, is_featured, createdAt, updatedAt) VALUES
+('seller5', 'cat_4', 'Jus Mangga Segar', 'Jus mangga fresh tanpa pewarna', 8.00, 'per gelas', '', 'ada_stok', 1, strftime('%s', 'now'), strftime('%s', 'now')),
+('seller5', 'cat_4', 'Jus Carrot Mix', 'Jus carrot + epal + halia yang sihat', 10.00, 'per gelas', '', 'ada_stok', 0, strftime('%s', 'now'), strftime('%s', 'now')),
+('seller5', 'cat_4', 'Air Kelapa Muda', 'Air kelapa segar dari coconut farm', 7.00, 'per gelas', '', 'ada_stok', 1, strftime('%s', 'now'), strftime('%s', 'now'));
