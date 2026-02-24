@@ -1,0 +1,30 @@
+{
+    "name": "dapur-rumah-api",
+    "version": "1.0.0",
+    "private": true,
+    "scripts": {
+        "dev": "wrangler dev",
+        "deploy": "wrangler deploy",
+        "db:migrate:local": "wrangler d1 execute dapur-db --local --file=../migrations/0001_create_tables.sql",
+        "db:seed:local": "wrangler d1 execute dapur-db --local --file=../migrations/0002_seed_categories.sql"
+    },
+    "dependencies": {
+        "@better-auth/cli": "^1.4.19",
+        "@better-auth/drizzle-adapter": "^1.5.0-beta.9",
+        "@better-auth/utils": "^0.3.1",
+        "@hono/zod-validator": "latest",
+        "better-auth": "^1.4.19",
+        "drizzle-orm": "^0.45.1",
+        "hono": "^4.0.0",
+        "kysely": "^0.27.6",
+        "kysely-d1": "^0.3.0",
+        "zod": "latest"
+    },
+    "devDependencies": {
+        "@cloudflare/workers-types": "^4.20240117.0",
+        "@types/node": "^25.3.0",
+        "drizzle-kit": "^0.30.5",
+        "typescript": "^5.9.3",
+        "wrangler": "^4.68.0"
+    }
+}

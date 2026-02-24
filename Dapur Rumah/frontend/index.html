@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ms">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="Platform pasaran makanan home-cooked komunitif di Malaysia.">
+    <meta name="theme-color" content="#ef4444">
+    <link rel="manifest" href="/manifest.json">
+
+    <!-- Open Graph for WhatsApp sharing -->
+    <meta property="og:title" content="Dapur Rumah">
+    <meta property="og:description" content="Sokong peniaga makanan lokal di kawasan anda.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://dapurrumah.com/">
+
+    <title>Dapur Rumah — Beli Makanan Home-Cooked Berdekatan Anda</title>
+    <link rel="stylesheet" href="/css/globals.css">
+    <link rel="stylesheet" href="/css/pages/home.css">
+</head>
+
+<body>
+    <header class="navbar">
+        <div class="nav-container">
+            <a href="/" class="logo">Dapur Rumah</a>
+            <div class="nav-actions">
+                <a href="/login.html" class="btn btn-outline" id="nav-login-btn">Untuk Peniaga</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="home-container">
+        <!-- Hero Search Section -->
+        <section class="hero-section text-center">
+            <h1>Sokong Peniaga Makanan Lokal</h1>
+            <p class="text-muted">Cari kek, lauk-pauk, dan kuih-muih dari jiran anda.</p>
+
+            <div class="search-box">
+                <input type="text" id="search-input" placeholder="Cari makanan kegemaran anda...">
+                <select id="state-filter" class="state-dropdown">
+                    <option value="">Semua Negeri</option>
+                    <option value="Johor">Johor</option>
+                    <option value="Kedah">Kedah</option>
+                    <option value="Kelantan">Kelantan</option>
+                    <option value="Melaka">Melaka</option>
+                    <option value="Negeri Sembilan">Negeri Sembilan</option>
+                    <option value="Pahang">Pahang</option>
+                    <option value="Perak">Perak</option>
+                    <option value="Perlis">Perlis</option>
+                    <option value="Pulau Pinang">Pulau Pinang</option>
+                    <option value="Sabah">Sabah</option>
+                    <option value="Sarawak">Sarawak</option>
+                    <option value="Selangor">Selangor</option>
+                    <option value="Terengganu">Terengganu</option>
+                    <option value="W.P. Kuala Lumpur">W.P. Kuala Lumpur</option>
+                    <option value="W.P. Putrajaya">W.P. Putrajaya</option>
+                    <option value="W.P. Labuan">W.P. Labuan</option>
+                </select>
+            </div>
+        </section>
+
+        <!-- Categories Chips -->
+        <section class="categories-section">
+            <div id="category-chips" class="chip-container">
+                <button class="chip active" data-id="">Semua</button>
+                <!-- Categories injected here -->
+            </div>
+        </section>
+
+        <!-- Featured Sellers Carousel (hidden until data loads) -->
+        <section class="featured-section" id="featured-section" style="display:none;">
+            <div class="section-header">
+                <h2 class="section-title">✨ Peniaga Pilihan</h2>
+                <p class="section-subtitle">Peniaga terpilih dengan produk berkualiti</p>
+            </div>
+            <div id="featured-carousel" class="featured-carousel">
+                <!-- Featured seller cards injected here -->
+            </div>
+        </section>
+
+        <!-- Catalog Grid -->
+        <section class="catalog-section">
+            <div id="catalog-grid" class="products-grid">
+                <!-- Products injected here -->
+                <p class="text-muted" style="text-align:center; grid-column:1/-1;">Sedang memuatkan senarai makanan...
+                </p>
+            </div>
+
+            <div class="pagination-actions" style="text-align: center; margin-top: 2rem; display: none;"
+                id="load-more-container">
+                <button id="load-more-btn" class="btn btn-outline">Muatkan Lagi</button>
+            </div>
+        </section>
+    </main>
+
+    <footer style="text-align:center; padding: 2rem; color: #64748b; margin-top: auto;">
+        <p>&copy; 2026 Dapur Rumah. Platform komuniti peniaga makanan.</p>
+    </footer>
+
+    <script type="module">
+        import { injectBottomNav } from '/js/ui.js';
+        injectBottomNav('home');
+    </script>
+    <script type="module" src="/js/home.js"></script>
+</body>
+
+</html>

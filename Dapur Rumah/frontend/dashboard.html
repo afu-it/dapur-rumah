@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="ms">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#ef4444">
+    <link rel="manifest" href="/manifest.json">
+    <title>Papan Pemuka Peniaga — Dapur Rumah</title>
+    <link rel="stylesheet" href="/css/globals.css">
+    <link rel="stylesheet" href="/css/pages/dashboard.css">
+</head>
+
+<body>
+    <header class="navbar">
+        <div class="nav-container">
+            <a href="/" class="logo">Dapur Rumah</a>
+            <div class="nav-actions">
+                <span id="user-greeting">Sila tunggu...</span>
+                <button id="logout-btn" class="btn btn-outline" style="display: none;">Log Keluar</button>
+            </div>
+        </div>
+    </header>
+
+    <main class="dashboard-container">
+        <!-- Seller Profile Section -->
+        <section class="card profile-section">
+            <h2>Profil Peniaga</h2>
+            <p class="text-muted">Lengkapkan maklumat kedai anda supaya pembeli boleh menghubungi anda.</p>
+
+            <form id="profile-form" class="form-stack">
+                <div class="form-group">
+                    <label for="shop_name">Nama Kedai / Jenama</label>
+                    <input type="text" id="shop_name" name="shop_name" required placeholder="Contoh: Dapur Kak Ani">
+                </div>
+
+                <div class="form-group">
+                    <label for="description">Penerangan Ringkas (Pilihan)</label>
+                    <textarea id="description" name="description" rows="3"
+                        placeholder="Sedia menerima tempahan untuk majlis..."></textarea>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="phone_whatsapp">Nombor WhatsApp</label>
+                        <input type="tel" id="phone_whatsapp" name="phone_whatsapp" required
+                            placeholder="60123456789 (Mula dengan 6)">
+                        <small class="text-muted">Tanpa simbol + atau sengkang (-)</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="state">Negeri</label>
+                        <select id="state" name="state" required>
+                            <option value="">Pilih Negeri</option>
+                            <option value="Johor">Johor</option>
+                            <option value="Kedah">Kedah</option>
+                            <option value="Kelantan">Kelantan</option>
+                            <option value="Melaka">Melaka</option>
+                            <option value="Negeri Sembilan">Negeri Sembilan</option>
+                            <option value="Pahang">Pahang</option>
+                            <option value="Perak">Perak</option>
+                            <option value="Perlis">Perlis</option>
+                            <option value="Pulau Pinang">Pulau Pinang</option>
+                            <option value="Sabah">Sabah</option>
+                            <option value="Sarawak">Sarawak</option>
+                            <option value="Selangor">Selangor</option>
+                            <option value="Terengganu">Terengganu</option>
+                            <option value="W.P. Kuala Lumpur">W.P. Kuala Lumpur</option>
+                            <option value="W.P. Putrajaya">W.P. Putrajaya</option>
+                            <option value="W.P. Labuan">W.P. Labuan</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div id="profile-feedback" class="feedback-msg"></div>
+                <button type="submit" id="save-profile-btn" class="btn btn-primary">Simpan Profil</button>
+            </form>
+        </section>
+
+        <!-- Product Management Section -->
+        <section class="products-section">
+            <div class="section-header">
+                <h2>Senarai Produk Anda</h2>
+                <button id="add-product-btn" class="btn btn-success">+ Tambah Produk</button>
+            </div>
+
+            <div id="products-grid" class="products-grid">
+                <!-- Skeletons / Products appended here -->
+                <p class="text-muted">Memuatkan produk...</p>
+            </div>
+        </section>
+    </main>
+
+    <!-- Add/Edit Product Modal -->
+    <div id="product-modal" class="modal">
+        <div class="modal-content card">
+            <div class="modal-header">
+                <h3 id="modal-title">Tambah Produk Baru</h3>
+                <button id="close-modal-btn" class="close-btn">&times;</button>
+            </div>
+
+            <form id="product-form" class="form-stack">
+                <input type="hidden" id="prod_id" name="prod_id">
+
+                <div class="image-upload-area">
+                    <label for="prod_image" class="image-label">Gambar Produk</label>
+                    <input type="file" id="prod_image" accept="image/*" style="font-size: 16px;">
+                    <input type="hidden" id="prod_image_url" name="prod_image_url">
+                    <div id="image-upload-feedback" class="text-muted" style="margin-top: 5px; font-size: 0.9em;">
+                        Disyorkan (Nisbah 1:1)</div>
+                    <img id="image-preview" class="img-preview" style="display: none;" />
+                </div>
+
+                <div class="form-group">
+                    <label for="prod_name">Nama Produk</label>
+                    <input type="text" id="prod_name" name="prod_name" required placeholder="Contoh: Kek Coklat Moist">
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="prod_price">Harga (RM)</label>
+                        <input type="number" id="prod_price" name="prod_price" step="0.50" min="0" required
+                            placeholder="15.00">
+                    </div>
+                    <div class="form-group">
+                        <label for="prod_price_note">Kiraan (Pilihan)</label>
+                        <input type="text" id="prod_price_note" name="prod_price_note"
+                            placeholder="Contoh: Sebalang, 50pcs">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="prod_category">Kategori</label>
+                        <select id="prod_category" name="prod_category" required>
+                            <!-- Seeded from JS -->
+                            <option value="">Pilih Kategori</option>
+                            <option value="1">Kek & Cookies</option>
+                            <option value="2">Masakan Panas</option>
+                            <option value="3">Kuih-muih</option>
+                            <option value="4">Minuman</option>
+                            <option value="5">Lain-lain</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="prod_status">Status Stok</label>
+                        <select id="prod_status" name="prod_status" required>
+                            <option value="ada_stok">Ada Stok (Sedia Dimakan)</option>
+                            <option value="preorder">Pre-Order (Tempahan)</option>
+                            <option value="habis">Habis (Out of Stock)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="prod_desc">Penerangan Produk (Pilihan)</label>
+                    <textarea id="prod_desc" name="prod_desc" rows="3"
+                        placeholder="Penerangan bahan atau cara tempahan."></textarea>
+                </div>
+
+                <div id="product-feedback" class="feedback-msg"></div>
+
+                <div class="modal-actions">
+                    <button type="button" id="delete-product-btn" class="btn btn-danger" style="display: none;">Padam
+                        Produk</button>
+                    <button type="submit" id="save-product-btn" class="btn btn-primary">Simpan Produk</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Analytics Section -->
+    <section class="card analytics-section" id="analytics-section" style="margin-top:2rem;">
+        <h2>📊 Analitik Saya</h2>
+        <p class="text-muted" style="margin-bottom:1.5rem;">Statistik pandangan dan minat pembeli terhadap produk anda.
+        </p>
+
+        <!-- Summary Stats -->
+        <div id="analytics-summary" class="analytics-stats">
+            <div class="stat-card">
+                <span class="stat-icon">👁️</span>
+                <div>
+                    <p class="stat-value" id="stat-views">—</p>
+                    <p class="stat-label">Jumlah Pandangan</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <span class="stat-icon">💬</span>
+                <div>
+                    <p class="stat-value" id="stat-clicks">—</p>
+                    <p class="stat-label">Klik WhatsApp</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <span class="stat-icon">🏪</span>
+                <div>
+                    <p class="stat-value" id="stat-products">—</p>
+                    <p class="stat-label">Produk Aktif</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Per-product Table -->
+        <div id="analytics-table-wrapper" style="overflow-x:auto; margin-top:1.5rem;">
+            <table class="analytics-table">
+                <thead>
+                    <tr>
+                        <th>Produk</th>
+                        <th>Status</th>
+                        <th style="text-align:right;">👁️ Pandangan</th>
+                        <th style="text-align:right;">💬 Klik WA</th>
+                    </tr>
+                </thead>
+                <tbody id="analytics-rows">
+                    <tr>
+                        <td colspan="4" style="text-align:center; color:#94a3b8;">Memuatkan...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <script type="module" src="/js/api.js"></script>
+
+    <script type="module" src="/js/upload.js"></script>
+    <script type="module" src="/js/dashboard.js"></script>
+    <script type="module">
+        import { injectBottomNav } from '/js/ui.js';
+        injectBottomNav('account');
+    </script>
+</body>
+
+</html>
