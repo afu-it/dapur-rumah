@@ -24,10 +24,12 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./Dapur Rumah/frontend
+        working-directory: "./Dapur Rumah/frontend"
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
       - name: Set up Node
         uses: actions/setup-node@v4
         with:
@@ -38,10 +40,12 @@ jobs:
         run: npm ci
       - name: Build project
         run: npm run build -- --base=/dapur-rumah/
+      - name: Disable Jekyll for uploaded artifact
+        run: touch dist/.nojekyll
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./Dapur Rumah/frontend/dist
+          path: "./Dapur Rumah/frontend/dist"
 
   deploy:
     environment:
