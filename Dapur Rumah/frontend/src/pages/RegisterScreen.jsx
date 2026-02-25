@@ -53,7 +53,10 @@ export default function RegisterScreen() {
         <p>Daftar akaun peniaga baharu</p>
       </div>
 
-      <div className="auth-form">
+      <form className="auth-form" onSubmit={(event) => {
+        event.preventDefault();
+        handleRegister();
+      }}>
         {error && <div className="error-message">{error}</div>}
 
         <div className="form-group">
@@ -63,6 +66,7 @@ export default function RegisterScreen() {
             className="form-input"
             placeholder="Ali bin Abu"
             value={name}
+            autoComplete="name"
             onChange={(e) => setName(e.target.value)}
           />
         </div>
@@ -74,6 +78,7 @@ export default function RegisterScreen() {
             className="form-input"
             placeholder="email@example.com"
             value={email}
+            autoComplete="email"
             onChange={(e) => setEmail(e.target.value)}
           />
         </div>
@@ -85,6 +90,7 @@ export default function RegisterScreen() {
             className="form-input"
             placeholder="Minima 6 karakter"
             value={password}
+            autoComplete="new-password"
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
@@ -96,18 +102,19 @@ export default function RegisterScreen() {
             className="form-input"
             placeholder="••••••••"
             value={confirmPassword}
+            autoComplete="new-password"
             onChange={(e) => setConfirmPassword(e.target.value)}
           />
         </div>
 
-        <button className="auth-btn" onClick={handleRegister} disabled={loading}>
+        <button type="submit" className="auth-btn" disabled={loading}>
           {loading ? 'Sedang mendaftar...' : 'Daftar Akaun'}
         </button>
 
         <p className="auth-link">
           dah ada akaun? <button onClick={() => navigate('/login')}>Login</button>
         </p>
-      </div>
+      </form>
     </div>
   );
 }

@@ -1,74 +1,20 @@
-const isLocalhost =
-  typeof window !== 'undefined' &&
-  (window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost');
+// ============================================
+// PREVIEW MODE — All API functions return mock data
+// Replace these with real API calls when backend is ready
+// ============================================
 
-const API_BASE = isLocalhost ? 'https://dapur-rumah-api.afuitdev.workers.dev' : '';
-const AUTH_TOKEN_KEY = 'dapur_auth_token';
-
-function getStoredAuthToken() {
-  try {
-    return localStorage.getItem(AUTH_TOKEN_KEY) || '';
-  } catch {
-    return '';
-  }
-}
+const MOCK_PRODUCTS = [
+  { id: 1, name: 'Nasi Lemak Ayam Berempah', seller: 'Kak Mah Kitchen', price: 8.50, category: 'masakan_panas', image: 'https://images.unsplash.com/photo-1626804475297-4160aae2fa44?auto=format&fit=crop&q=80&w=300' },
+  { id: 2, name: 'Kek Coklat Moist', seller: 'Bake By Sarah', price: 15.00, category: 'pencuda_mulut', image: 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&q=80&w=300' },
+  { id: 3, name: 'Mee Goreng Mamak', seller: 'Warisan Nenek', price: 6.00, category: 'masakan_panas', image: 'https://images.unsplash.com/photo-1626082896492-766af4eb65ed?auto=format&fit=crop&q=80&w=300' },
+  { id: 4, name: 'Karipap Pusing (10pcs)', seller: 'Makcik Kiah', price: 5.00, category: 'kuih', image: 'https://images.unsplash.com/photo-1605333396914-230f293a9089?auto=format&fit=crop&q=80&w=300' },
+  { id: 5, name: 'Ayam Masak Merah', seller: 'Dapur Nisa', price: 12.00, category: 'berlauk', image: 'https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?auto=format&fit=crop&q=80&w=300' },
+  { id: 6, name: 'Keropok Lekor', seller: 'Pok Jeli', price: 4.00, category: 'makanan_ringan', image: 'https://images.unsplash.com/photo-1628294895950-9805252327bc?auto=format&fit=crop&q=80&w=300' },
+];
 
 export async function apiFetch(endpoint, options = {}) {
-  const headers = new Headers(options.headers || {});
-  const token = getStoredAuthToken();
-  if (token && !headers.has('Authorization')) {
-    headers.set('Authorization', `Bearer ${token}`);
-  }
-
-  const config = {
-    ...options,
-    credentials: 'include',
-    headers,
-  };
-
-  if (config.body && typeof config.body === 'object' && !(config.body instanceof FormData)) {
-    config.body = JSON.stringify(config.body);
-    if (!headers.has('Content-Type')) {
-      headers.set('Content-Type', 'application/json');
-    }
-  }
-
-  const url = endpoint.startsWith('http') ? endpoint : API_BASE + endpoint;
-  const res = await fetch(url, config);
-  const contentType = res.headers.get('content-type') || '';
-  const isJson = contentType.includes('application/json');
-
-  if (isJson) {
-    try {
-      const data = await res.json();
-
-      if (!res.ok) {
-        return {
-          success: false,
-          ...data,
-          error: data?.error || data?.message || `HTTP ${res.status}`,
-        };
-      }
-
-      return data;
-    } catch (e) {
-      // Fall through and return a normalized parse error below.
-    }
-  }
-
-  const text = await res.text();
-
-  if (!res.ok) {
-    return {
-      success: false,
-      error: text || `HTTP ${res.status}`,
-    };
-  }
-
-  return {
-    success: true,
-    data: text,
-  };
+  console.warn('[Preview Mode] API call skipped:', endpoint);
+  return { success: true, data: null };
 }
 
 export const api = {
@@ -80,46 +26,47 @@ export const api = {
 
 // Products API
 export async function getProducts() {
-  return api.get('/api/catalog/products');
+  return { success: true, data: MOCK_PRODUCTS };
 }
 
 export async function getProduct(id) {
-  return api.get(`/api/products/${id}`);
+  const product = MOCK_PRODUCTS.find(p => p.id === Number(id));
+  return { success: true, data: product || MOCK_PRODUCTS[0] };
 }
 
 export async function getSellers() {
-  return api.get('/api/catalog/sellers');
+  return { success: true, data: [] };
 }
 
 export async function getSeller(id) {
-  return api.get(`/api/sellers/${id}`);
+  return { success: true, data: null };
 }
 
 // Dashboard API
 export async function getDashboardProfile() {
-  return api.get('/api/dashboard/profile');
+  return { success: true, data: { shop_name: 'Kedai Demo', description: 'Preview mode', phone_whatsapp: '60123456789', state: 'Selangor' } };
 }
 
 export async function updateDashboardProfile(data) {
-  return api.put('/api/dashboard/profile', data);
+  return { success: true };
 }
 
 export async function getDashboardProducts() {
-  return api.get('/api/dashboard/products');
+  return { success: true, data: [] };
 }
 
 export async function createProduct(data) {
-  return api.post('/api/dashboard/products', data);
+  return { success: true, data: { id: 'mock-' + Date.now(), ...data } };
 }
 
 export async function updateProduct(id, data) {
-  return api.put(`/api/dashboard/products/${id}`, data);
+  return { success: true };
 }
 
 export async function deleteProduct(id) {
-  return api.delete(`/api/dashboard/products/${id}`);
+  return { success: true };
 }
 
 export async function getAnalytics() {
-  return api.get('/api/dashboard/analytics');
+  return { success: true, data: { views: 0, clicks: 0 } };
 }

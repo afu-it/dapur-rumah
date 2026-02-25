@@ -32,7 +32,8 @@ export default function DashboardScreen() {
 
   const [profile, setProfile] = useState({ shop_name: '', description: '', phone_whatsapp: '', state: '' });
   const [products, setProducts] = useState([]);
-  const [analytics] = useState({ views: 0, clicks: 0, products: 0 });
+  const [analytics] = useState({ views: 0, clicks: 0 });
+  const [showSaved, setShowSaved] = useState(false);
 
   useEffect(() => {
     if (isDemo) {
@@ -42,13 +43,25 @@ export default function DashboardScreen() {
     }
   }, [demoId, isDemo]);
 
-  function handleLogout() {
-    logout();
-    navigate('/login');
+  async function handleLogout() {
+    try {
+      await logout();
+    } finally {
+      navigate('/login');
+    }
+  }
+
+  function handleSaveProfile() {
+    setShowSaved(true);
+    setTimeout(() => setShowSaved(false), 2500);
   }
 
   function getStatusBadge(status) {
-    const badges = { ada_stok: { label: 'ADA STOK', color: '#059669', bg: '#D1FAE5' }, preorder: { label: 'PRE-ORDER', color: '#D97706', bg: '#FEF3C7' }, habis: { label: 'HABIS', color: '#DC2626', bg: '#FEE2E2' } };
+    const badges = {
+      ada_stok: { label: 'Ada Stok', className: 'status-available' },
+      preorder: { label: 'Preorder', className: 'status-preorder' },
+      habis: { label: 'Habis', className: 'status-soldout' },
+    };
     return badges[status] || badges.ada_stok;
   }
 
@@ -57,7 +70,7 @@ export default function DashboardScreen() {
       <div className="dashboard-header">
         <h1>{isDemo ? DEMO_ACCOUNTS[demoId]?.greeting : `Hai, ${user?.name || 'Peniaga'}`}</h1>
         <p>{profile.shop_name || 'Dapur Saya'}</p>
-        <button className="logout-btn" onClick={handleLogout}>{isDemo ? 'Keluar Demo' : 'Logout'}</button>
+        <button type="button" className="logout-btn" onClick={handleLogout}>{isDemo ? 'Keluar Demo' : 'Logout'}</button>
       </div>
 
       <div className="stats-grid">
@@ -85,22 +98,23 @@ export default function DashboardScreen() {
             <label>Negeri</label>
             <input className="form-input" value={profile.state} onChange={(e) => setProfile({ ...profile, state: e.target.value })} placeholder="Selangor" />
           </div>
-          <button className="save-btn">Simpan Profil</button>
+          <button type="button" className="save-btn" onClick={handleSaveProfile}>Simpan Profil</button>
+          {showSaved && <p className="helper-success">Profil disimpan.</p>}
         </div>
       </div>
 
       <div className="dashboard-section">
-        <h3 style={{ marginBottom: 12, fontSize: 16, fontWeight: 'bold' }}>Produk Saya</h3>
+        <h3 className="section-title">Produk Saya</h3>
         {products.length === 0 ? (
-          <div className="section-card"><p style={{ color: '#636E72' }}>Tiada produk lagi</p></div>
+          <div className="section-card"><p className="muted-text">Tiada produk lagi</p></div>
         ) : (
           products.map((product) => {
             const badge = getStatusBadge(product.status);
             return (
-              <div key={product.id} className="section-card" style={{ marginBottom: 8 }}>
+              <div key={product.id} className="section-card product-admin-card">
                 <h4>{product.name}</h4>
-                <p style={{ color: '#FF6B35', fontWeight: 'bold' }}>RM {product.price.toFixed(2)}</p>
-                <span style={{ fontSize: 10, background: badge.bg, color: badge.color, padding: '2px 6px', borderRadius: 4 }}>{badge.label}</span>
+                <p className="price-strong">RM {product.price.toFixed(2)}</p>
+                <span className={`product-status ${badge.className}`}>{badge.label}</span>
               </div>
             );
           })

@@ -15,7 +15,7 @@ export default function AdminScreen() {
       <div className="admin-header">
         <h1>Admin Panel</h1>
         <p>Dapur Rumah</p>
-        <button className="logout-btn" onClick={() => navigate('/')}>Logout</button>
+        <button type="button" className="logout-btn" onClick={() => navigate('/')}>Logout</button>
       </div>
 
       <div className="stats-grid">
@@ -25,30 +25,28 @@ export default function AdminScreen() {
       </div>
 
       <div className="dashboard-section">
-        <h3 style={{ marginBottom: 12, fontSize: 16, fontWeight: 'bold' }}>Senarai Peniaga</h3>
+        <h3 className="section-title">Senarai Peniaga</h3>
         {sellers.map((seller) => (
-          <div key={seller.id} className="section-card" style={{ marginBottom: 8 }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+          <div key={seller.id} className="section-card seller-admin-card">
+            <div className="seller-admin-main">
               <div>
-                <h4 style={{ fontSize: 15, fontWeight: 600 }}>{seller.name}</h4>
-                <p style={{ fontSize: 13, color: '#636E72' }}>{seller.email}</p>
-                <p style={{ fontSize: 12, color: '#636E72', marginTop: 4 }}>{seller.products} produk</p>
+                <h4>{seller.name}</h4>
+                <p>{seller.email}</p>
+                <p>{seller.products} produk</p>
               </div>
-              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 8 }}>
-                <span style={{ fontSize: 10, background: seller.status === 'active' ? '#D1FAE5' : '#FEF3C7', color: seller.status === 'active' ? '#059669' : '#D97706', padding: '2px 8px', borderRadius: 4 }}>
-                  {seller.status === 'active' ? 'AKTIF' : 'MENUNGGU'}
-                </span>
-              </div>
+              <span className={`product-status ${seller.status === 'active' ? 'status-available' : 'status-preorder'}`}>
+                {seller.status === 'active' ? 'Aktif' : 'Menunggu'}
+              </span>
             </div>
           </div>
         ))}
       </div>
 
       <div className="dashboard-section">
-        <h3 style={{ marginBottom: 12, fontSize: 16, fontWeight: 'bold' }}>Tindakan</h3>
-        <button className="section-card" style={{ width: '100%', textAlign: 'left', marginBottom: 8 }}>📊 Analitik Platform</button>
-        <button className="section-card" style={{ width: '100%', textAlign: 'left', marginBottom: 8 }}>📝 Urus Kategori</button>
-        <button className="section-card" style={{ width: '100%', textAlign: 'left' }}>⚙️ Tetapan Sistem</button>
+        <h3 className="section-title">Tindakan</h3>
+        <button type="button" className="section-card action-card">📊 Analitik Platform</button>
+        <button type="button" className="section-card action-card">📝 Urus Kategori</button>
+        <button type="button" className="section-card action-card">⚙️ Tetapan Sistem</button>
       </div>
     </div>
   );

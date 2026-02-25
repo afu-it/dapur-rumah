@@ -24,12 +24,14 @@ export default function AccountScreen() {
       <div className="account-tabs">
         <button
           className={`account-tab ${activeSection === 'details' ? 'active' : ''}`}
+          type="button"
           onClick={() => setActiveSection('details')}
         >
           👤 Details
         </button>
         <button
           className={`account-tab ${activeSection === 'address' ? 'active' : ''}`}
+          type="button"
           onClick={() => setActiveSection('address')}
         >
           📍 Address
@@ -38,7 +40,7 @@ export default function AccountScreen() {
 
       <div className="account-content">
         {activeSection === 'details' ? (
-          <div>
+          <div className="section-card">
             <div className="profile-header">
               <div className="profile-avatar">👤</div>
               <h2>Pembeli</h2>
@@ -63,10 +65,10 @@ export default function AccountScreen() {
                 onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
               />
             </div>
-            <button className="save-btn" onClick={handleSave}>Simpan Maklumat</button>
+            <button type="button" className="save-btn" onClick={handleSave}>Simpan Maklumat</button>
           </div>
         ) : (
-          <div>
+          <div className="section-card">
             <div className="profile-header">
               <div className="profile-avatar">📍</div>
               <h2>Alamat Penghantaran</h2>
@@ -80,27 +82,27 @@ export default function AccountScreen() {
                 onChange={(e) => setFormData({ ...formData, address: e.target.value })}
               />
             </div>
-            <button className="save-btn" onClick={handleSave}>Simpan Alamat</button>
+            <button type="button" className="save-btn" onClick={handleSave}>Simpan Alamat</button>
           </div>
         )}
-      </div>
 
-      <div className="seller-section">
-        <div className="divider">
-          <span>atau</span>
-        </div>
-        <p className="seller-text">Anda peniaga? Login untuk urus pesanan.</p>
-        <button className="seller-btn" onClick={() => navigate('/login')}>
-          Login sebagai Peniaga
-        </button>
-        <div className="demo-btns">
-          <button className="demo-btn" onClick={() => navigate('/dashboard?demo=1')}>Demo Seller 1</button>
-          <button className="demo-btn" onClick={() => navigate('/dashboard?demo=2')}>Demo Seller 2</button>
+        <div className="seller-section">
+          <div className="divider">
+            <span>atau</span>
+          </div>
+          <p className="seller-text">Anda peniaga? Login untuk urus pesanan.</p>
+          <button type="button" className="seller-btn" onClick={() => navigate('/login')}>
+            Login sebagai Peniaga
+          </button>
+          <div className="demo-btns">
+            <button type="button" className="demo-btn" onClick={() => navigate('/dashboard?demo=1')}>Demo Seller 1</button>
+            <button type="button" className="demo-btn" onClick={() => navigate('/dashboard?demo=2')}>Demo Seller 2</button>
+          </div>
         </div>
       </div>
 
       {showSuccess && (
-        <div style={{ position: 'fixed', bottom: 100, left: 16, right: 16, background: '#059669', borderRadius: 12, padding: 12, textAlign: 'center', color: 'white', fontWeight: 600 }}>
+        <div className="toast-success">
           ✓ Maklumat berjaya disimpan!
         </div>
       )}

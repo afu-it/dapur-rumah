@@ -1,5 +1,4 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
-import { api } from '../api';
+import React, { createContext, useContext, useState, useEffect } from "react";
 
 const AuthContext = createContext(null);
 
@@ -8,48 +7,54 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    checkSession();
+    // Preview mode: no API call, just check localStorage for mock session
+    try {
+      const savedUser = localStorage.getItem("dapur_mock_user");
+      if (savedUser) {
+        setUser(JSON.parse(savedUser));
+      }
+    } catch {
+      // ignore
+    }
+    setLoading(false);
   }, []);
 
-  async function checkSession() {
-    try {
-      const session = await api.get('/api/auth/get-session');
-      if (session.session) {
-        setUser(session.user);
-      }
-    } catch (error) {
-      console.error('Session check failed:', error);
-    } finally {
-      setLoading(false);
-    }
-  }
-
   async function login(email, password) {
-    const result = await api.post('/api/auth/sign-in/email', { email, password });
-    if (result.token) {
-      localStorage.setItem('dapur_auth_token', result.token);
-      await checkSession();
-    }
-    return result;
+    // Preview mode: mock login — always succeeds
+    const mockUser = {
+      id: "mock-user-1",
+      name: email.split("@")[0],
+      email,
+      role: "seller",
+    };
+    setUser(mockUser);
+    localStorage.setItem("dapur_mock_user", JSON.stringify(mockUser));
+    return { success: true, token: "mock-token" };
   }
 
   async function register(name, email, password) {
-    const result = await api.post('/api/auth/sign-up/email', { name, email, password });
-    if (result.token) {
-      localStorage.setItem('dapur_auth_token', result.token);
-      await checkSession();
-    }
-    return result;
+    // Preview mode: mock register — always succeeds
+    const mockUser = {
+      id: "mock-user-" + Date.now(),
+      name,
+      email,
+      role: "seller",
+    };
+    setUser(mockUser);
+    localStorage.setItem("dapur_mock_user", JSON.stringify(mockUser));
+    return { success: true, token: "mock-token" };
   }
 
   async function logout() {
-    await api.post('/api/auth/sign-out', {});
-    localStorage.removeItem('dapur_auth_token');
+    // Preview mode: just clear state
+    localStorage.removeItem("dapur_mock_user");
     setUser(null);
   }
 
   return (
-    <AuthContext.Provider value={{ user, loading, login, register, logout, checkSession }}>
+    <AuthContext.Provider
+      value={{ user, loading, login, register, logout, checkSession: () => {} }}
+    >
       {children}
     </AuthContext.Provider>
   );
@@ -58,7 +63,7 @@ export function AuthProvider({ children }) {
 export function useAuth() {
   const context = useContext(AuthContext);
   if (!context) {
-    throw new Error('useAuth must be used within AuthProvider');
+    throw new Error("useAuth must be used within AuthProvider");
   }
   return context;
 }

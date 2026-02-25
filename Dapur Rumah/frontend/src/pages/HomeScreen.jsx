@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
-import { getProducts } from '../api';
 
 const MOCK_PRODUCTS = [
   { id: 1, name: 'Nasi Lemak Ayam Berempah', seller: 'Kak Mah Kitchen', price: 8.50, category: 'masakan_panas', image: 'https://images.unsplash.com/photo-1626804475297-4160aae2fa44?auto=format&fit=crop&q=80&w=300' },
@@ -24,23 +23,8 @@ const CATEGORIES = [
 export default function HomeScreen() {
   const navigate = useNavigate();
   const { addToCart } = useCart();
-  const [products, setProducts] = useState(MOCK_PRODUCTS);
+  const [products] = useState(MOCK_PRODUCTS);
   const [selectedCategory, setSelectedCategory] = useState('all');
-
-  useEffect(() => {
-    loadProducts();
-  }, []);
-
-  async function loadProducts() {
-    try {
-      const result = await getProducts();
-      if (result.success && result.data) {
-        setProducts(result.data);
-      }
-    } catch (error) {
-      console.log('Using mock data');
-    }
-  }
 
   const filteredProducts = selectedCategory === 'all'
     ? products
@@ -51,9 +35,9 @@ export default function HomeScreen() {
       <header className="home-header">
         <div className="header-location">
           <span className="location-label">Hantar ke</span>
-          <span className="location-value">Pilih Lokasi ▾</span>
+          <button type="button" className="location-value">Pilih Lokasi ▾</button>
         </div>
-        <button className="header-avatar" onClick={() => navigate('/account')}>👤</button>
+        <button type="button" className="header-avatar" onClick={() => navigate('/account')} aria-label="Buka akaun">👤</button>
       </header>
 
       <div className="home-content">
@@ -62,7 +46,7 @@ export default function HomeScreen() {
             <span className="promo-tag">🔥 PROMOSI</span>
             <h3>Free Delivery<br />First Order!</h3>
             <p>Tempah sekarang & jimat pengantaran.</p>
-            <button className="promo-btn" onClick={() => navigate('/search')}>Tempah Sekarang</button>
+            <button type="button" className="promo-btn" onClick={() => navigate('/search')}>Tempah Sekarang</button>
           </div>
         </div>
 
@@ -72,6 +56,7 @@ export default function HomeScreen() {
               <button
                 key={cat.id}
                 className={`category-chip ${selectedCategory === cat.id ? 'active' : ''}`}
+                type="button"
                 onClick={() => setSelectedCategory(cat.id)}
               >
                 {cat.icon} {cat.label}
@@ -83,7 +68,7 @@ export default function HomeScreen() {
         <div className="products-section">
           <div className="section-header">
             <h2>Makanan Popular</h2>
-            <span className="item-count">{filteredProducts.length} items</span>
+            <span className="item-count">{filteredProducts.length} menu</span>
           </div>
 
           <div className="products-grid">
@@ -91,7 +76,15 @@ export default function HomeScreen() {
               <div
                 key={product.id}
                 className="product-card"
+                role="button"
+                tabIndex={0}
                 onClick={() => navigate(`/product?id=${product.id}`)}
+                onKeyDown={(event) => {
+                  if (event.key === 'Enter' || event.key === ' ') {
+                    event.preventDefault();
+                    navigate(`/product?id=${product.id}`);
+                  }
+                }}
               >
                 <img src={product.image} alt={product.name} className="product-image" />
                 <div className="product-info">
@@ -99,7 +92,17 @@ export default function HomeScreen() {
                   <p className="product-seller">{product.seller}</p>
                   <div className="product-footer">
                     <span className="product-price">RM {product.price.toFixed(2)}</span>
-                    <button className="add-btn" onClick={(e) => { e.stopPropagation(); addToCart(product); }}>+</button>
+                    <button
+                      type="button"
+                      className="add-btn"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        addToCart(product);
+                      }}
+                      aria-label={`Tambah ${product.name} ke troli`}
+                    >
+                      +
+                    </button>
                   </div>
                 </div>
               </div>

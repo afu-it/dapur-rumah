@@ -4,7 +4,7 @@ import { useCart } from '../context/CartContext';
 
 export default function CartScreen() {
   const navigate = useNavigate();
-  const { cart, cartTotal, userProfile, updateQty, generateWhatsAppMessage } = useCart();
+  const { cart, cartTotal, userProfile, removeFromCart, updateQty, generateWhatsAppMessage } = useCart();
 
   function handleSendToWhatsApp() {
     if (cart.length === 0) return;
@@ -29,7 +29,7 @@ export default function CartScreen() {
           <div className="cart-empty-icon">🛒</div>
           <h3>Troli Kosong</h3>
           <p>Mula-mula cari makanan sedap!</p>
-          <button className="btn-primary" onClick={() => navigate('/')}>Mula Belanja</button>
+          <button type="button" className="btn-primary" onClick={() => navigate('/')}>Mula Belanja</button>
         </div>
       </div>
     );
@@ -39,6 +39,7 @@ export default function CartScreen() {
     <div className="cart-screen">
       <header className="cart-header">
         <h1>Troli Saya</h1>
+        <p>{cart.length} menu dalam troli</p>
       </header>
       <div className="cart-content">
         {cart.map((item) => (
@@ -48,9 +49,12 @@ export default function CartScreen() {
               <div className="cart-item-title">{item.name}</div>
               <div className="cart-item-price">RM {(item.price * item.qty).toFixed(2)}</div>
               <div className="qty-control">
-                <button className="qty-btn" onClick={() => updateQty(item.id, -1)}>-</button>
+                <button type="button" className="qty-btn" onClick={() => updateQty(item.id, -1)} aria-label={`Kurangkan kuantiti ${item.name}`}>-</button>
                 <span>{item.qty}</span>
-                <button className="qty-btn" onClick={() => updateQty(item.id, 1)}>+</button>
+                <button type="button" className="qty-btn" onClick={() => updateQty(item.id, 1)} aria-label={`Tambah kuantiti ${item.name}`}>+</button>
+                <button type="button" className="remove-item-btn" onClick={() => removeFromCart(item.id)}>
+                  Buang
+                </button>
               </div>
             </div>
           </div>
@@ -66,8 +70,11 @@ export default function CartScreen() {
           <p>Nama: {userProfile.name || '-'}</p>
           <p>Tel: {userProfile.phone || '-'}</p>
           <p>Alamat: {userProfile.address || '-'}</p>
+          <button type="button" className="text-link-btn" onClick={() => navigate('/account')}>
+            Kemaskini profil penghantaran
+          </button>
         </div>
-        <button className="whatsapp-btn" onClick={handleSendToWhatsApp}>
+        <button type="button" className="whatsapp-btn" onClick={handleSendToWhatsApp}>
           💬 Hantar Pesanan ke WhatsApp
         </button>
       </div>

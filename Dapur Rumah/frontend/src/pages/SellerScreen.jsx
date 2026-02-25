@@ -32,17 +32,25 @@ export default function SellerScreen() {
         <div className="seller-header-avatar">{seller.shop_name?.charAt(0) || 'S'}</div>
         <h1>{seller.shop_name}</h1>
         <p>📍 {seller.state}</p>
-        {seller.description && <p style={{ marginTop: 8, fontSize: 13, opacity: 0.9 }}>{seller.description}</p>}
+        {seller.description && <p className="seller-description">{seller.description}</p>}
       </div>
 
-      <div className="products-section" style={{ padding: 16 }}>
-        <h2 style={{ fontSize: 16, fontWeight: 'bold', marginBottom: 16 }}>Produk dari {seller.shop_name}</h2>
+      <div className="products-section seller-products">
+        <h2 className="section-title">Produk dari {seller.shop_name}</h2>
         <div className="products-grid">
           {seller.products.map((product) => (
             <div
               key={product.id}
               className="product-card"
+              role="button"
+              tabIndex={0}
               onClick={() => navigate(`/product?id=${product.id}`)}
+              onKeyDown={(event) => {
+                if (event.key === 'Enter' || event.key === ' ') {
+                  event.preventDefault();
+                  navigate(`/product?id=${product.id}`);
+                }
+              }}
             >
               <img src={product.image} alt={product.name} className="product-image" />
               <div className="product-info">

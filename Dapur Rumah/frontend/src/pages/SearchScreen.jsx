@@ -36,7 +36,7 @@ export default function SearchScreen() {
     <div className="search-screen">
       <div className="search-header">
         <div className="search-input-wrapper">
-          <span>🔍</span>
+          <span className="search-icon">🔍</span>
           <input
             type="text"
             className="search-input"
@@ -45,19 +45,22 @@ export default function SearchScreen() {
             onChange={(e) => handleSearch(e.target.value)}
           />
           {searchQuery.length > 0 && (
-            <button onClick={() => handleSearch('')}>✕</button>
+            <button type="button" className="clear-search-btn" onClick={() => handleSearch('')} aria-label="Kosongkan carian">
+              ✕
+            </button>
           )}
         </div>
       </div>
 
       <div className="search-content">
         {searchQuery.length === 0 ? (
-          <div>
-            <h3 style={{ marginBottom: '12px', fontSize: '14px', fontWeight: '600' }}>Popular Carian</h3>
+          <div className="search-block">
+            <h3 className="search-subtitle">Popular Carian</h3>
             {SUGGESTIONS.map((suggestion, index) => (
               <button
                 key={index}
                 className="suggestion-item"
+                type="button"
                 onClick={() => handleSearch(suggestion)}
               >
                 <span>✓</span>
@@ -68,18 +71,26 @@ export default function SearchScreen() {
         ) : searchResults.length === 0 ? (
           <div className="cart-empty">
             <div className="cart-empty-icon">🔍</div>
-            <h3>Tiada makanan dijumnai</h3>
+            <h3>Tiada makanan dijumpai</h3>
             <p>Cuba carian lain</p>
           </div>
         ) : (
-          <div>
-            <p style={{ fontSize: '14px', color: '#636E72', marginBottom: '12px' }}>{searchResults.length} hasil</p>
+          <div className="search-block">
+            <p className="search-subtitle">{searchResults.length} hasil</p>
             <div className="products-grid">
               {searchResults.map((product) => (
                 <div
                   key={product.id}
                   className="product-card"
+                  role="button"
+                  tabIndex={0}
                   onClick={() => navigate(`/product?id=${product.id}`)}
+                  onKeyDown={(event) => {
+                    if (event.key === 'Enter' || event.key === ' ') {
+                      event.preventDefault();
+                      navigate(`/product?id=${product.id}`);
+                    }
+                  }}
                 >
                   <img src={product.image} alt={product.name} className="product-image" />
                   <div className="product-info">
@@ -87,7 +98,17 @@ export default function SearchScreen() {
                     <p className="product-seller">{product.seller}</p>
                     <div className="product-footer">
                       <span className="product-price">RM {product.price.toFixed(2)}</span>
-                      <button className="add-btn" onClick={(e) => { e.stopPropagation(); addToCart(product); }}>+</button>
+                      <button
+                        type="button"
+                        className="add-btn"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          addToCart(product);
+                        }}
+                        aria-label={`Tambah ${product.name} ke troli`}
+                      >
+                        +
+                      </button>
                     </div>
                   </div>
                 </div>

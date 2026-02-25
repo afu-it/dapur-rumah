@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
 export default function LoginScreen() {
@@ -41,7 +41,10 @@ export default function LoginScreen() {
         <p>Login ke akaun peniaga</p>
       </div>
 
-      <div className="auth-form">
+      <form className="auth-form" onSubmit={(event) => {
+        event.preventDefault();
+        handleLogin();
+      }}>
         {error && <div className="error-message">{error}</div>}
 
         <div className="form-group">
@@ -51,6 +54,7 @@ export default function LoginScreen() {
             className="form-input"
             placeholder="email@example.com"
             value={email}
+            autoComplete="email"
             onChange={(e) => setEmail(e.target.value)}
           />
         </div>
@@ -62,24 +66,25 @@ export default function LoginScreen() {
             className="form-input"
             placeholder="••••••••"
             value={password}
+            autoComplete="current-password"
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
 
-        <button className="auth-btn" onClick={handleLogin} disabled={loading}>
+        <button type="submit" className="auth-btn" disabled={loading}>
           {loading ? 'Sedang login...' : 'Login'}
         </button>
 
         <p className="auth-link">
           belum ada akaun? <button onClick={() => navigate('/register')}>Daftar</button>
         </p>
-      </div>
+      </form>
 
-      <div style={{ marginTop: 32 }}>
+      <div className="auth-extra">
         <div className="divider"><span>atau</span></div>
-        <p style={{ textAlign: 'center', fontSize: 14, color: '#636E72', marginBottom: 16 }}>Cuba tanpa akaun</p>
-        <button className="seller-btn" onClick={() => navigate('/dashboard?demo=1')}>Demo Seller 1 (Nur Aina)</button>
-        <button className="seller-btn" style={{ marginTop: 8 }} onClick={() => navigate('/dashboard?demo=2')}>Demo Seller 2 (Hakim Roslan)</button>
+        <p className="auth-helper-text">Cuba tanpa akaun</p>
+        <button type="button" className="seller-btn" onClick={() => navigate('/dashboard?demo=1')}>Demo Seller 1 (Nur Aina)</button>
+        <button type="button" className="seller-btn seller-btn-spaced" onClick={() => navigate('/dashboard?demo=2')}>Demo Seller 2 (Hakim Roslan)</button>
       </div>
     </div>
   );
