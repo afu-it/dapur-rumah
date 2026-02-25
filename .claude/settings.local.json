@@ -2,7 +2,13 @@
   "permissions": {
     "allow": [
       "Bash(git config --global user.name)",
-      "Bash(git config --global user.email)"
+      "Bash(git config --global user.email)",
+      "Bash(npm install)",
+      "Bash(npm view @gluestack-ui/react versions --json)",
+      "Bash(npm view @gluestack-ui/themed versions --json)",
+      "Bash(npm view @gluestack-ui/react@latest version)",
+      "Bash(npm view @gluestack-ui/themed@latest version)",
+      "Bash(npm run build)"
     ]
   }
 }
